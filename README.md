@@ -10,16 +10,8 @@ This dataset was huge ~260K rows( aka samples) and 298 (features) and to add to 
 
 I implemented two feature selection stratergies
 
-Mutual information: Mutual information (MI) between two random variables is a non-negative value, which measures the dependency between the variables. It is equal to zero if and only if two random variables are independent, and higher values mean higher dependency.
+(1) Experiment with SMOTE (or its variations) using different percentages to get a higher accuracy on minority class prediction.
 
-Reculsive Feature Elimination: Given an external estimator that assigns weights to features (e.g., the coefficients of a linear model), the goal of recursive feature elimination (RFE) is to select features by recursively considering smaller and smaller sets of features. First, the estimator is trained on the initial set of features and the importance of each feature is obtained either through any specific attribute or callable. Then, the least important features are pruned from current set of features. That procedure is recursively repeated on the pruned set until the desired number of features to select is eventually reached.
+(2) Perform ensemble predictions (one-layer stacking) by combining predictions from the various algorithms. For stacking, try at least five different models - e.g. decision tree, random forest, support vector machines, multilayer perceptron and K-nearest neighbors.
 
-After inspecting and performing EDA on the selected features I decided to treat all featues as catergorical.
-
-Once I have the feature selected to 50 from 298 I triend two model one simple Logistic regression with one-hot encoding and other LightGBM . With logistic regression I Was able to get the ROC-AUC score to 0.95 but the model took a long time to train due to large number of one-hot encoding
-
-I hyper-parameter tuned two Light GBM model with Optuna. Optuna is a hyperparameter framework . One feature which I like about it is that it allows us to stop the run for un-promising combination of values . This allows us to run hyper-parameter search for a larger grid.
-
-First model was trained on features obtained using mutual information which gave the ROC-AUC score as 0.93 and the second model was trained with features obtained from RFE which gave me a ROC-AUC score of 0.96+ For the final private test submission I was able to get a score of 0.9627 on the private leader board.
-
-Finally I used Sklearn Pipeline to optimize the prediction workflow for the test set. This allowed me to skip storing all the feature encoding values for 50 feature columns.
+(3) In addition, perform hyperparameter tuning on the stacked model. You can do hyperparameter tuning on individual models 
